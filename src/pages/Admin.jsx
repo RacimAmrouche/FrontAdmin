@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import { ListeAlertes } from "../../services/Admin"
+import { GetInfoAlert } from "../../services/Admin"
+
 
 // Correction pour les icônes Leaflet
 delete L.Icon.Default.prototype._getIconUrl
@@ -30,26 +32,7 @@ function LocationMarker() {
   const [locationError, setLocationError] = useState(null)
   const map = useMap()
 
-  useEffect(() => {
-    map.locate({ setView: true, maxZoom: 13 })
-    
-    map.on('locationfound', (e) => {
-      setPosition(e.latlng)
-      map.flyTo(e.latlng, 13)
-    })
-    
-    map.on('locationerror', (e) => {
-      console.log('Erreur de localisation:', e.message)
-      setLocationError(e.message)
-      // Centrer sur Paris par défaut en cas d'erreur
-      map.flyTo([48.8566, 2.3522], 13)
-    })
-    
-    return () => {
-      map.off('locationfound')
-      map.off('locationerror')
-    }
-  }, [map])
+
 
   return position === null ? null : (
     <Marker position={position}>
@@ -61,13 +44,12 @@ function LocationMarker() {
   )
 }
 
-// Fonction pour créer un patient
-const createPatient = (
-  UID,
+// Fonction pour créer un alerte
+const createAlerte = (
+  uid,
   firstname,  
   lastname,
-  dateOfBirth,
-  age,
+  dateofbirth,
   gender,
   height,
   weight,
@@ -75,87 +57,65 @@ const createPatient = (
   postalCode,
   phoneNumber,
   email,
-  confmail,
-  imageFile
+ latitudepat,
+ longitudepat,
+  state,
+  location,
+  uidpros,
+  firstnamepro,
+  lastnamepro,
+  emailpro,
+  phonenumberpro,
+  latitudepro,
+  longitudepro,
+  color,
+  createdat
 
 
 ) => {
  
   return {
-    UID,
-    firstname,
-    lastname,
-    dateOfBirth,
-    age,
-    gender: gender === true ? "male" : gender === false ? "female" : gender,
-    height: parseFloat(height),
-    weight: parseFloat(weight),
-    address,
-    postalCode,
-    phoneNumber,
-    email,
-    confmail,
-    image: imageFile 
+  uid,
+  firstname,  
+  lastname,
+  dateofbirth,
+
+  gender,
+  height,
+  weight,
+  address,
+  postalCode,
+  phoneNumber,
+  email,
+  latitudepat,
+  longitudepat,
+  state,
+  location,
+  uidpros: uidpros===null ? "/": uidpros,
+  firstnamepro: firstnamepro===null ? "/": firstnamepro,
+  lastnamepro: lastnamepro===null ? "/": lastnamepro,
+  emailpro: emailpro===null ? "/": emailpro,
+  phonenumberpro: phonenumberpro===null ? "/": phonenumberpro,
+  latitudepro: latitudepro===null ? "/": latitudepro,
+  longitudepro: longitudepro===null ? "/": longitudepro,
+  color,
+  createdat 
   }
 }
 
-
-useEffect(  async () => {
-  const listepat = await ListeAlertes();
-  const patients = listepat.data.map((patient) => { 
-    createPatient(patient)
+async function getAddressFromCoords(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'YourAppName/1.0' // Important pour l’API Nominatim
+    }
   });
+  const data = await response.json();
+  return data.address.road; // ou data.address.road pour juste la rue
 }
-, []);
 
-// Création de plusieurs patients
-const pat = [
-  createPatient(
-    "Melinda",
-    "Belabbas",
-    "2004-04-18",
-    false,
-    1.70,                     
-    62.5,                     
-    "123 Rue des Lilas, Paris",
-    "75015",
-    "+33 6 12 34 56 78",
-    "melinda.bananini@email.com",
-    "superSecure123",
-    ""   
-  ),
-  createPatient(
-    "Thomas",
-    "Dubois",
-    "1985-09-22",
-    true,
-    1.82,                     
-    78.3,                     
-    "45 Avenue Victor Hugo, Paris",
-    "75016",
-    "+33 6 98 76 54 32",
-    "thomas.dubois@email.com",
-    "password456",
-    ""   
-  ),
-  createPatient(
-    "Sophia",
-    "Martin",
-    "1992-03-15",
-    false,
-    1.65,                     
-    58.0,                     
-    "78 Boulevard Saint-Germain, Paris",
-    "75006",
-    "+33 6 23 45 67 89",
-    "sophie.martin@email.com",
-    "securePass789",
-    ""   
-  )
-]
 
 const Admin = () => {
-  // État pour les alertes des utilisateurs
   const [alerts, setAlerts] = useState([])
   // État pour l'alerte sélectionnée
   const [selectedAlert, setSelectedAlert] = useState(null)
@@ -166,87 +126,77 @@ const Admin = () => {
     resolvedAlerts: 0,
     pendingVerifications: 0
   })
+  const [tabalerts, setTabalerts] = useState([]);
 
-  // Charger des données d'exemple au démarrage
   useEffect(() => {
-    // Créer des alertes basées sur les patients
-    const exampleAlerts = [
-      {
-      id: "ALERT001",
-      userId: "USR123",
-      patient: patients[0], // Melinda
-      status: "active",
-      timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 minutes ago
-      location: {
-        latitude: 36.7372,
-        longitude: 3.0863,
-        address: patients[0].address
-      },
-      description: "Douleur thoracique intense",
-      urgencyLevel: "high"
-      },
-      {
-      id: "ALERT002",
-      userId: "USR456",
-      patient: patients[1], // Thomas
-      status: "active",
-      timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 minutes ago
-      location: {
-        latitude: 36.7525,
-        longitude: 3.0419,
-        address: patients[1].address
-      },
-      description: "Difficulté à respirer",
-      urgencyLevel: "medium"
-      },
-      {
-      id: "ALERT003",
-      userId: "USR789",
-      patient: patients[2], // Sophie
-      status: "resolved",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(), // 1 hour ago
-      location: {
-        latitude: 36.7642,
-        longitude: 3.0588,
-        address: patients[2].address
-      },
-      description: "Fracture possible au bras",
-      urgencyLevel: "low"
-      },
-    ]
+   //getAddressFromCoords(48.8566, 2.3522).then(console.log)
 
-    setAlerts(exampleAlerts)
-    
-    // Mettre à jour les statistiques
-    setStats({
-      totalAlerts: exampleAlerts.length,
-      activeAlerts: exampleAlerts.filter(a => a.status === "active").length,
-      resolvedAlerts: exampleAlerts.filter(a => a.status === "resolved").length,
-      pendingVerifications: 12 // Nombre fictif pour l'exemple
-    })
-  }, [])
+    const fetchData = async () => {
+      try {
+        const listepat = await ListeAlertes();
+        console.log("liste des id alertes", listepat.data);
 
-  // Formater la date pour l'affichage
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+        const alertes = await Promise.all(
+          listepat.data.map(async (alert) => {
+            const formdataa = new FormData();
+            formdataa.append("idpat", alert);
+
+            try {
+              const infoalert = await GetInfoAlert(formdataa);
+              console.log("info d'une alerte", infoalert);
+
+              return createAlerte(
+                infoalert.data.patientID,
+                infoalert.data.name,
+                infoalert.data.lastName,
+                infoalert.data.birthdate,
+                infoalert.data.gender,
+                infoalert.data.height,
+                infoalert.data.weight,
+                infoalert.data.address,
+                infoalert.data.postalcode,
+                infoalert.data.phonenumber,
+                infoalert.data.email,
+                infoalert.data.latitudePatient,
+                infoalert.data.longitudePatient,
+                infoalert.data.state,
+                infoalert.data.location,
+                infoalert.data.proSID,
+                infoalert.data.firstnamepro,
+                infoalert.data.lastnamepro,
+                infoalert.data.emailProS,
+                infoalert.data.phonenumberProS,
+                infoalert.data.latitudeProS,
+                infoalert.data.longitudeProS,
+                infoalert.data.color,
+                infoalert.data.createdAt
+              );
+            } catch (error) {
+              console.error("Erreur lors de GetInfoAlert:", error);
+              return null;
+            }
+          })
+        );
+
+        // On filtre les alertes nulles (erreurs)
+        const alertesValides = alertes.filter((a) => a !== null);
+        setTabalerts(alertesValides);
+        console.log("tab des alertes", alertesValides);
+      } catch (error) {
+        console.error("Erreur lors de ListeAlertes:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Obtenir la classe de badge en fonction du niveau d'urgence
   const getUrgencyBadgeClass = (level) => {
     switch (level) {
-      case "high":
+      case "rouge":
         return "bg-red-100 text-red-800"
-      case "medium":
+      case "orange":
         return "bg-orange-100 text-orange-800"
-      case "low":
-        return "bg-yellow-100 text-yellow-800"
       default:
         return "bg-gray-100 text-gray-800"
     }
@@ -255,44 +205,23 @@ const Admin = () => {
   // Traduire le niveau d'urgence
   const translateUrgencyLevel = (level) => {
     switch (level) {
-      case "high":
+      case "rouge":
         return "Élevée"
-      case "medium":
+      case "orange":
         return "Moyenne"
-      case "low":
-        return "Faible"
       default:
         return "Inconnue"
     }
   }
 
-  // Marquer une alerte comme résolue
-  const resolveAlert = (alertId) => {
-    if (window.confirm("Êtes-vous sûr de vouloir marquer cette alerte comme résolue ?")) {
-      setAlerts(alerts.map(alert => 
-        alert.id === alertId 
-          ? { ...alert, status: "resolved" } 
-          : alert
-      ))
-      
-      // Mettre à jour les statistiques
-      setStats(prev => ({
-        ...prev,
-        activeAlerts: prev.activeAlerts - 1,
-        resolvedAlerts: prev.resolvedAlerts + 1
-      }))
-      
-      // Désélectionner l'alerte si elle était sélectionnée
-      if (selectedAlert && selectedAlert.id === alertId) {
-        setSelectedAlert(null)
-      }
-    }
+  function formatReadableDate(isoString) {
+    return new Date(isoString).toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "medium",
+    });
   }
 
-  // Obtenir le nom complet du patient
-  const getPatientFullName = (patient) => {
-    return `${patient.firstname} ${patient.lastname}`
-  }
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -324,8 +253,8 @@ const Admin = () => {
           {/* Conteneur de carte avec hauteur fixe */}
           <div className="h-[500px] rounded-lg overflow-hidden border border-gray-300">
             <MapContainer 
-              center={[48.8566, 2.3522]} 
-              zoom={13} 
+              center={[36.7538, 3.0588]} 
+              zoom={10} 
               style={{ height: "100%", width: "100%" }}
             >
               <TileLayer
@@ -337,33 +266,28 @@ const Admin = () => {
               <LocationMarker />
 
               {/* Marqueurs pour chaque alerte */}
-              {alerts.map((alert) => (
+              {tabalerts.map((alerti) => (
                 <Marker 
-                  key={alert.id} 
-                  position={[alert.location.latitude, alert.location.longitude]}
+                  key={alerti.UID} 
+                  position={[parseFloat(alerti.latitudepat), parseFloat(alerti.longitudepat)]}
                   icon={alertIcon}
                   eventHandlers={{
                     click: () => {
-                      setSelectedAlert(alert)
+                      setSelectedAlert(alerti)
                     }
                   }}
                 >
                   <Popup>
-                    <div className="text-sm">
-                      <h3 className="font-bold text-[#F05050]">{getPatientFullName(alert.patient)}</h3>
-                      <p className="mb-1">{alert.description}</p>
-                      <p className="text-xs text-gray-600">{formatDate(alert.timestamp)}</p>
+                    <div className="text-sm ">
+                      <h3 className="font-bold text-[#F05050]">{alerti.firstname} {alerti.lastname}</h3>
+                    
+                      <p className="text-xs text-gray-600">{formatReadableDate(alerti.createdat)}</p>
                       <div className="mt-2">
-                        <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alert.urgencyLevel)}`}>
-                          Urgence: {translateUrgencyLevel(alert.urgencyLevel)}
+                        <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alerti.color)}`}>
+                          Urgence:{translateUrgencyLevel(alerti.color)}
                         </span>
                       </div>
-                      <button 
-                        onClick={() => setSelectedAlert(alert)}
-                        className="mt-2 w-full text-center px-2 py-1 bg-[#F05050] text-white rounded-md text-xs hover:bg-[#D32F2F]"
-                      >
-                        Voir détails
-                      </button>
+                      
                     </div>
                   </Popup>
                 </Marker>
@@ -382,13 +306,13 @@ const Admin = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-bold text-lg">{getPatientFullName(selectedAlert.patient)}</h3>
-                  <p className="text-sm text-gray-600">ID: {selectedAlert.userId}</p>
+                  <h3 className="font-bold text-lg text-black">{selectedAlert.firstname} {selectedAlert.lastname}</h3>
+                  <p className="text-sm text-gray-600">ID: {selectedAlert.uid}</p>
                 </div>
                 <span className={`text-xs px-2 py-1 rounded-full ${
-                  selectedAlert.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                  selectedAlert.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                 }`}>
-                  {selectedAlert.status === "active" ? "Active" : "Résolue"}
+                  {selectedAlert.state === 0 ? "Non traitée" : "En cours de traitement"}
                 </span>
               </div>
               
@@ -397,67 +321,53 @@ const Admin = () => {
                 <h4 className="font-medium text-gray-700 mb-2">Informations du patient</h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-gray-600">Âge:</p>
-                    <p>{selectedAlert.patient.age} ans</p>
+                    <p className="text-gray-600">Date de naissance:</p>
+                    <p className="text-black">{selectedAlert.dateofbirth}</p>
                   </div>
                   <div>
                     <p className="text-gray-600">Genre:</p>
-                    <p>{selectedAlert.patient.gender}</p>
+                    <p className="text-black">{selectedAlert.gender}</p>
                   </div>
                   <div>
                     <p className="text-gray-600">Taille:</p>
-                    <p>{selectedAlert.patient.height} m</p>
+                    <p className="text-black">{selectedAlert.height} m</p>
                   </div>
                   <div>
                     <p className="text-gray-600">Poids:</p>
-                    <p>{selectedAlert.patient.weight} kg</p>
+                    <p className="text-black">{selectedAlert.weight} kg</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-gray-600">Téléphone:</p>
-                    <p>{selectedAlert.patient.phoneNumber}</p>
+                    <p className="text-black">{selectedAlert.phoneNumber}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-gray-600">Email:</p>
-                    <p>{selectedAlert.patient.email}</p>
+                    <p className="text-black">{selectedAlert.email}</p>
                   </div>
                 </div>
               </div>
-              
-              <div>
-                <h4 className="font-medium text-gray-700">Description de l'alerte</h4>
-                <p>{selectedAlert.description}</p>
-              </div>
-              
               <div>
                 <h4 className="font-medium text-gray-700">Niveau d'urgence</h4>
-                <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(selectedAlert.urgencyLevel)}`}>
-                  {translateUrgencyLevel(selectedAlert.urgencyLevel)}
+                <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(selectedAlert.color)}`}>
+                  {translateUrgencyLevel(selectedAlert.color)}
                 </span>
               </div>
               
               <div>
                 <h4 className="font-medium text-gray-700">Localisation</h4>
-                <p className="text-sm">{selectedAlert.location.address}</p>
-                <p className="text-xs text-gray-500">
-                  Lat: {selectedAlert.location.latitude.toFixed(4)}, 
-                  Long: {selectedAlert.location.longitude.toFixed(4)}
+                <p className="text-sm text-black">{}</p>
+                <p className="text-xs text-black">
+                  Lat: {selectedAlert.latitudepat}, 
+                  Long: {selectedAlert.longitudepat}
                 </p>
               </div>
               
               <div>
                 <h4 className="font-medium text-gray-700">Horodatage</h4>
-                <p className="text-sm">{formatDate(selectedAlert.timestamp)}</p>
+                <p className="text-sm text-black">{formatReadableDate(selectedAlert.createdat)}</p>
               </div>
               
               <div className="pt-4 flex space-x-2">
-                {selectedAlert.status === "active" && (
-                  <button 
-                    onClick={() => resolveAlert(selectedAlert.id)}
-                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-                  >
-                    Marquer comme résolue
-                  </button>
-                )}
                  <button 
                   onClick={() => setSelectedAlert(null)}
                   className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
@@ -467,32 +377,30 @@ const Admin = () => {
               </div>
             </div>
           ): (
-            <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-              {alerts.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Aucune alerte enregistrée</p>
+            <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 py-1">
+              {tabalerts.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">Aucune alerte en cours.</p>
               ) : (
-                alerts.map((alert) => (
+                tabalerts.map((alerti) => (
                   <div
-                    key={alert.id}
-                    className={`border border-gray-200 rounded-md p-3 ${
-                      alert.status === "active" ? "bg-red-50" : "bg-gray-50"
-                    } cursor-pointer hover:shadow-md transition-shadow`}
-                    onClick={() => setSelectedAlert(alert)}
+                    key={alerti.uid}
+                    className={`border border-gray-200 rounded-md p-3 bg-gray-50 cursor-pointer hover:shadow-md transition-shadow`}
+                    onClick={() => setSelectedAlert(alerti)}
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <div className="font-medium">{getPatientFullName(alert.patient)}</div>
-                        <div className="text-sm text-gray-600">{alert.description}</div>
-                        <div className="text-xs text-gray-500">{formatDate(alert.timestamp)}</div>
+                        <div className="font-medium text-neutral-800" >{alerti.firstname} {alerti.lastname}</div>
+                
+                        <div className="text-xs text-gray-500">{formatReadableDate(alerti.createdat)}</div>
                       </div>
                       <div className="flex flex-col items-end">
                         <span className={`text-xs px-2 py-1 rounded-full mb-1 ${
-                          alert.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                          alerti.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                         }`}>
-                          {alert.status === "active" ? "Active" : "Résolue"}
+                          {alerti.state === 0 ? "Non traitée" : "En cours de traitement"}
                         </span>
-                        <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alert.urgencyLevel)}`}>
-                          {translateUrgencyLevel(alert.urgencyLevel)}
+                        <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alerti.color)}`}>
+                          {translateUrgencyLevel(alerti.color)}
                         </span>
                       </div>
                     </div>
