@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import { ListeAlertes } from "../../services/Admin"
+import Layout from "../components/layouts/layout"
 import { GetInfoAlert } from "../../services/Admin"
 
 
@@ -57,10 +58,11 @@ const createAlerte = (
   postalCode,
   phoneNumber,
   email,
- latitudepat,
- longitudepat,
+  latitudepat,
+  longitudepat,
   state,
   location,
+  locationproS,
   uidpros,
   firstnamepro,
   lastnamepro,
@@ -91,13 +93,14 @@ const createAlerte = (
   longitudepat,
   state,
   location,
-  uidpros: uidpros===null ? "/": uidpros,
-  firstnamepro: firstnamepro===null ? "/": firstnamepro,
-  lastnamepro: lastnamepro===null ? "/": lastnamepro,
-  emailpro: emailpro===null ? "/": emailpro,
-  phonenumberpro: phonenumberpro===null ? "/": phonenumberpro,
-  latitudepro: latitudepro===null ? "/": latitudepro,
-  longitudepro: longitudepro===null ? "/": longitudepro,
+  locationproS,
+  uidpros: uidpros=="" ? "/": uidpros,
+  firstnamepro: firstnamepro=="" ? "/": firstnamepro,
+  lastnamepro,
+  emailpro: emailpro=="" ? "/": emailpro,
+  phonenumberpro: phonenumberpro=="" ? "/": phonenumberpro,
+  latitudepro: latitudepro=="" ? "/": latitudepro,
+  longitudepro: longitudepro=="" ? "/": longitudepro,
   color,
   createdat 
   }
@@ -107,17 +110,21 @@ async function getAddressFromCoords(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
   const response = await fetch(url, {
     headers: {
-      'User-Agent': 'YourAppName/1.0' // Important pour l’API Nominatim
+      'User-Agent': 'YourAppName/1.0' 
     }
   });
   const data = await response.json();
-  return data.address.road; // ou data.address.road pour juste la rue
+  console.log("rep open street ",data)
+  return data.address.road+", "+data.address.town+", "+data.address.state; 
 }
 
+function capitalizeFirstLetter(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const Admin = () => {
-  const [alerts, setAlerts] = useState([])
-  // État pour l'alerte sélectionnée
+
   const [selectedAlert, setSelectedAlert] = useState(null)
   // État pour les statistiques
   const [stats, setStats] = useState({
@@ -144,7 +151,11 @@ const Admin = () => {
             try {
               const infoalert = await GetInfoAlert(formdataa);
               console.log("info d'une alerte", infoalert);
-
+              const loca = await getAddressFromCoords(infoalert.data.latitudePatient, infoalert.data.longitudePatient);
+              let loca2=null;
+              if(infoalert.data.latitudeProS != "" && infoalert.data.longitudeProS != ""){
+                loca2 = await getAddressFromCoords(infoalert.data.latitudeProS, infoalert.data.longitudeProS);
+              }
               return createAlerte(
                 infoalert.data.patientID,
                 infoalert.data.name,
@@ -160,7 +171,8 @@ const Admin = () => {
                 infoalert.data.latitudePatient,
                 infoalert.data.longitudePatient,
                 infoalert.data.state,
-                infoalert.data.location,
+                loca,
+                loca2 == null ? "/": loca2,
                 infoalert.data.proSID,
                 infoalert.data.firstnamepro,
                 infoalert.data.lastnamepro,
@@ -206,9 +218,9 @@ const Admin = () => {
   const translateUrgencyLevel = (level) => {
     switch (level) {
       case "rouge":
-        return "Élevée"
+        return "High"
       case "orange":
-        return "Moyenne"
+        return "Medium"
       default:
         return "Inconnue"
     }
@@ -224,31 +236,34 @@ const Admin = () => {
 
 
   return (
-    <div className="container mx-auto px-4 py-8">
-   
+    <div className="min-h-screen p-4 bg-gray-100">
 
-      {/* Cartes de statistiques */}
-      
+    {/* Onglets de navigation */}
+    <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base mt-[51px]">
+  <div className="flex flex-wrap border-b">
+    <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
+      Alertes
+    </button>
+    <Link
+      to="/VerifPat"
+      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+    >
+      Vérifier comptes patients
+    </Link>
+    <Link
+      to="/VerifPros"
+      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+    >
+      Vérifier comptes professionnels
+    </Link>
+  </div>
+</div>
 
-      {/* Onglets de navigation */}
-      <div className="bg-white rounded-lg shadow-md mb-6">
-        <div className="flex border-b">
-          <button className="px-6 py-3 font-medium text-[#F05050] border-b-2 border-[#F05050]">
-            Alertes
-          </button>
-          <Link to="/VerifPat" className="px-6 py-3 font-medium text-gray-600 hover:text-[#F05050]">
-            Vérifier comptes patients
-          </Link>
-          <Link to="/VerifPros" className="px-6 py-3 font-medium text-gray-600 hover:text-[#F05050]">
-            Vérifier comptes professionnels
-          </Link>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Section carte */}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-4">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Carte des alertes</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">Live Alerts Map</h2>
 
           {/* Conteneur de carte avec hauteur fixe */}
           <div className="h-[500px] rounded-lg overflow-hidden border border-gray-300">
@@ -277,6 +292,7 @@ const Admin = () => {
                     }
                   }}
                 >
+                {/* AJOUTER MARKER PRO S*/}
                   <Popup>
                     <div className="text-sm ">
                       <h3 className="font-bold text-[#F05050]">{alerti.firstname} {alerti.lastname}</h3>
@@ -297,94 +313,123 @@ const Admin = () => {
         </div>
 
         {/* Section détails de l'alerte */}
-        <div className="bg-white rounded-lg shadow-md p-4">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            {selectedAlert ? "Détails de l'alerte" : "Liste des alertes"}
+        <div className="bg-white rounded-lg shadow-md py-2 px-4 h-[600px] overflow-y-auto">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            {selectedAlert ? "Alert Details" : "Alerts List"}
           </h2>
 
           {selectedAlert ? (
-            <div className="space-y-4">
+            <div className="">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-bold text-lg text-black">{selectedAlert.firstname} {selectedAlert.lastname}</h3>
-                  <p className="text-sm text-gray-600">ID: {selectedAlert.uid}</p>
+                  <h3 className="font-semibold text-lg text-gray-700 mb-2">{selectedAlert.firstname} {selectedAlert.lastname}</h3>
                 </div>
                 <span className={`text-xs px-2 py-1 rounded-full ${
                   selectedAlert.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                 }`}>
-                  {selectedAlert.state === 0 ? "Non traitée" : "En cours de traitement"}
+                  {selectedAlert.state === 0 ? "Unhandled" : "Being Handled"}
                 </span>
               </div>
-              
-              {/* Informations du patient */}
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <h4 className="font-medium text-gray-700 mb-2">Informations du patient</h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <p className="text-gray-600">Date de naissance:</p>
-                    <p className="text-black">{selectedAlert.dateofbirth}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Genre:</p>
-                    <p className="text-black">{selectedAlert.gender}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Taille:</p>
-                    <p className="text-black">{selectedAlert.height} m</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Poids:</p>
-                    <p className="text-black">{selectedAlert.weight} kg</p>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-gray-600">Téléphone:</p>
-                    <p className="text-black">{selectedAlert.phoneNumber}</p>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-gray-600">Email:</p>
-                    <p className="text-black">{selectedAlert.email}</p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-medium text-gray-700">Niveau d'urgence</h4>
+              <div className="mb-2">
+                <h4 className="font-medium text-gray-800">Alert Level</h4>
                 <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(selectedAlert.color)}`}>
                   {translateUrgencyLevel(selectedAlert.color)}
                 </span>
               </div>
               
-              <div>
-                <h4 className="font-medium text-gray-700">Localisation</h4>
-                <p className="text-sm text-black">{}</p>
-                <p className="text-xs text-black">
+              <div className="mb-2">
+                <h4 className="font-medium text-gray-800">Location</h4>
+                <p className="text-sm text-gray-700">{selectedAlert.location}</p>
+                <p className="text-xs text-gray-700">
                   Lat: {selectedAlert.latitudepat}, 
                   Long: {selectedAlert.longitudepat}
                 </p>
               </div>
               
               <div>
-                <h4 className="font-medium text-gray-700">Horodatage</h4>
-                <p className="text-sm text-black">{formatReadableDate(selectedAlert.createdat)}</p>
+                <h4 className="font-medium text-gray-800">Timestamp</h4>
+                <p className="text-xs text-gray-700">{formatReadableDate(selectedAlert.createdat)}</p>
+              </div>
+              {/* Informations du patient */}
+              <div className="bg-white p-3 rounded-lg border-1 my-3 border-gray-200">
+                <h4 className="font-medium text-gray-800 mb-2">Patient Informations</h4>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                  <p className="text-sm text-gray-600"><p className="font-semibold text-gray-800">UID: </p>{selectedAlert.uid}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-800 font-semibold">Date Of Birth</p>
+                    <p className="text-gray-600">{selectedAlert.dateofbirth}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-800 font-semibold">Gender</p>
+                    <p className="text-gray-600">{capitalizeFirstLetter(selectedAlert.gender)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-800 font-semibold">Height</p>
+                    <p className="text-gray-600">{selectedAlert.height} m</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-800 font-semibold">Weight</p>
+                    <p className="text-gray-600">{selectedAlert.weight} kg</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-800 font-semibold">Phone Number</p>
+                    <p className="text-gray-600">{selectedAlert.phoneNumber}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-800 font-semibold">Email:</p>
+                    <p className="text-gray-600">{selectedAlert.email}</p>
+                  </div>
+                </div>
               </div>
               
-              <div className="pt-4 flex space-x-2">
+              
+               {/* Informations du patient */}
+               <div className="bg-white p-3 rounded-lg border-1 border-gray-200">
+                <h4 className="font-medium text-gray-800 mb-2">Healthcare Professional Informations</h4>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <p className="text-gray-800 font-semibold">Full Name:</p>
+                    <p className="text-gray-600">{selectedAlert.firstnamepro} {selectedAlert.lastnamepro}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-800 font-semibold">Phone Number:</p>
+                    <p className="text-gray-600">{selectedAlert.phonenumberpro}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-gray-800 font-semibold">Email:</p>
+                    <p className="text-gray-600">{selectedAlert.emailpro}</p>
+                  </div>
+                  <div>
+                <h4 className="font-medium text-gray-800">Location</h4>
+                <p className="text-sm text-gray-700">{selectedAlert.locationproS}</p>
+                <p className="text-xs text-gray-700">
+                  Lat: {selectedAlert.latitudeProS}, 
+                  Long: {selectedAlert.longitudeProS}
+                </p>
+              </div>
+                </div>
+              </div>
+
+              <div className="pt-4 flex space-x-2 mb-2">
                  <button 
                   onClick={() => setSelectedAlert(null)}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-[#f05050] hover:text-white transition-colors"
                 >
-                  Retour à la liste
+                  Back To The List
                 </button>
               </div>
             </div>
           ): (
             <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 py-1">
               {tabalerts.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Aucune alerte en cours.</p>
+                <p className="text-gray-500 text-center py-4">No ongoing alerts.</p>
               ) : (
                 tabalerts.map((alerti) => (
                   <div
                     key={alerti.uid}
-                    className={`border border-gray-200 rounded-md p-3 bg-gray-50 cursor-pointer hover:shadow-md transition-shadow`}
+                    className={`border-1 border-gray-200 rounded-md p-3 bg-white cursor-pointer hover:shadow-md hover:shadow-[#f05050]/50 hover:shadow-opa transition-shadow`}
                     onClick={() => setSelectedAlert(alerti)}
                   >
                     <div className="flex justify-between items-start">
@@ -397,7 +442,7 @@ const Admin = () => {
                         <span className={`text-xs px-2 py-1 rounded-full mb-1 ${
                           alerti.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                         }`}>
-                          {alerti.state === 0 ? "Non traitée" : "En cours de traitement"}
+                          {alerti.state === 0 ? "Unhandled" : "Being Handled"}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alerti.color)}`}>
                           {translateUrgencyLevel(alerti.color)}
@@ -412,6 +457,7 @@ const Admin = () => {
         </div>
       </div>
     </div>
+
   )
 }
 

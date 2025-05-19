@@ -124,18 +124,7 @@ const RootLayout = () => {
 
               {/* Auth Buttons et Toggle */}
               <div className="hidden md:flex items-center">
-                {/* Toggle dark mode button */}
-                <button
-                  onClick={toggleDarkMode}
-                  className={`mr-4 ${isDark ? "bg-gray-700" : "bg-white"} rounded-full p-1 flex items-center w-12 h-6 relative transition-colors duration-300`}
-                  aria-label={isDark ? "Passer au mode clair" : "Passer au mode sombre"}
-                >
-                  <div
-                    className={`absolute top-1 w-4 h-4 rounded-full transition-all duration-300 ${
-                      isDark ? "bg-blue-400 translate-x-6" : "bg-yellow-400 translate-x-1"
-                    }`}
-                  ></div>
-                </button>
+
 
                 {/* Boutons de connexion */}
                 <div
@@ -223,10 +212,7 @@ const RootLayout = () => {
         </footer>
       )}
 
-      {/* Indicateur de mode sombre (pour le débogage) */}
-      <div className="fixed bottom-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-gray-800 text-white">
-        {isDark ? "DARK" : "LIGHT"}
-      </div>
+
     </div>
   )
 }

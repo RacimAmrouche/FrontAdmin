@@ -27,7 +27,9 @@ import VerifPat from "./pages/VerifPat";
 import VerifPros from "./pages/VerifPros";
 import AdminCrea from "./pages/AdminCrea";
 import AccountSettings from "./pages/AccountSettings";
-import { DarkModeProvider } from "./components/layouts/DarkModeContext";
+//import { DarkModeProvider } from "./components/layouts/DarkModeContext";
+import ScrollTest from "./pages/tst";
+import Layout from "./components/layouts/layout";
 
 function App() {
   const router = createBrowserRouter(
@@ -38,7 +40,7 @@ function App() {
 
         <Route path="RespSignup" element={<RespSignup />} />
 
-
+      <Route path="tst" element={<ScrollTest/>} />
         <Route path="Adminin" element={<Adminin/>} />
       <Route path="VerifPat" element={<VerifPat />} />
       <Route path="VerifPros" element={<VerifPros />} />
@@ -52,9 +54,11 @@ function App() {
   );
 
   return (
-    <DarkModeProvider>
+    <>
+   
       <RouterProvider router={router} />
-    </DarkModeProvider>
+   
+    </>
   );
 }
 

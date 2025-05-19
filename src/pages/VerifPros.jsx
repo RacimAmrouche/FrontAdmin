@@ -1,6 +1,7 @@
 "use client"
-
+import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
+import Layout from "../components/layouts/layout"
 
 const VerifPros = () => {
   // État pour stocker la liste des professionnels en attente de vérification
@@ -140,7 +141,27 @@ const VerifPros = () => {
   }
 
   return (
+    
     <div className="min-h-screen p-4 bg-gray-100">
+      <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base">
+            <div className="flex flex-wrap border-b">
+           <Link
+            to="/Admin"
+            className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+          >
+            alertes
+          </Link>
+          <Link
+            to="/VerifPat"
+            className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+          >
+            Vérifier comptes patients
+          </Link>
+          <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
+            Verif comptes pro
+          </button>
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Vérification des Professionnels</h1>
 
@@ -290,6 +311,7 @@ const VerifPros = () => {
         </div>
       </div>
     </div>
+   
   )
 }
 
