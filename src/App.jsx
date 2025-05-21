@@ -26,6 +26,7 @@ import Admin from "./pages/Admin";
 import VerifPat from "./pages/VerifPat";
 import VerifPros from "./pages/VerifPros";
 import AdminCrea from "./pages/AdminCrea";
+import Moderation from "./pages/Moderation";
 import AccountSettings from "./pages/AccountSettings";
 //import { DarkModeProvider } from "./components/layouts/DarkModeContext";
 import ScrollTest from "./pages/tst";
@@ -49,6 +50,7 @@ function App() {
         <Route path="AdminHin" element={<AdminHin />} />
         <Route path="SupAdminin" element={<SupAdminin />} />
         <Route path="AdminCrea" element={<AdminCrea />} />
+        <Route path="Moderation" element={<Moderation />} />
       </Route>
     )
   );

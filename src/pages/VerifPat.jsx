@@ -19,7 +19,7 @@ const VerifPat = () => {
       try{ 
         const formdata = new FormData()
         formdata.append("roleadm",0)
-        formdata.append("IDAdminn","927B3FC1-72CD-4F61-94B4-C67C7C425809")
+        formdata.append("IDAdminn","FF40682C-A640-40EC-A284-4A18966A8BA6")
         const response = await ListPatVal(formdata)
         //on recois une liste de patients
         console.log(response.data)
@@ -287,7 +287,7 @@ const VerifPat = () => {
                     <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
-                        src={`http://192.168.1.102:5001/${selectedPatient.carteid}`} 
+                        src={`http://192.168.163.10:5001/${selectedPatient.carteid}`} 
                         alt="Carte d'identité"
                         className="w-full h-auto object-cover"
                       />
