@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AllPat, AllProS, SuspendUser } from '../../services/Admin';
+import { AllPat, AllProS, RemoveSuspension, SuspendUser } from '../../services/Admin';
 
 const Moderation = () => {
     const navigate = useNavigate();
@@ -54,15 +54,36 @@ const Moderation = () => {
     };
 
     // Gérer la levée de suspension d'un utilisateur
-    const handleUnsuspendUser = (user) => {
+    const handleUnsuspendUser = async (user) => {
         if (activeTab === 'patients') {
+            try{
+                const formdata = new FormData();
+                formdata.append('id', user.uid);
+                formdata.append("role","10");
+                const response = await RemoveSuspension(formdata);
+                console.log(response.data);
+            }
+            catch (error) {
+                console.error("Error suspending user:", error);
+            }
             const updatedPatients = patients.map(p => 
-                p.id === user.id ? { ...p, status: 'active', suspensionReason: null } : p
+                p.uid === user.uid ? { ...p, accountStatus: false, suspensionReason: null } : p
             );
+
             setPatients(updatedPatients);
         } else {
+            try{
+                const formdata = new FormData();
+                formdata.append('id', user.uid);
+                formdata.append("role","20");
+                const response = await RemoveSuspension(formdata);
+                console.log(response.data);
+            }
+            catch (error) {
+                console.error("Error suspending user:", error);
+            }
             const updatedProfessionals = professionals.map(p => 
-                p.id === user.id ? { ...p, status: 'active', suspensionReason: null } : p
+                p.uid === user.uid ? { ...p, accountStatus: false, suspensionReason: null } : p
             );
             setProfessionals(updatedProfessionals);
         }
@@ -88,7 +109,7 @@ const Moderation = () => {
                 console.error("Error suspending user:", error);
             }
             const updatedPatients = patients.map(p => 
-                p.id === selectedUser.id ? { ...p, accountStatus: true, suspensionReason: banReason } : p
+                p.uid === selectedUser.uid ? { ...p, accountStatus: true, suspensionReason: banReason } : p
             );
             setPatients(updatedPatients);
         } else {
@@ -104,7 +125,7 @@ const Moderation = () => {
                 console.error("Error suspending user:", error);
             }
             const updatedProfessionals = professionals.map(p => 
-                p.id === selectedUser.id ? { ...p, accountStatus: true, suspensionReason: banReason } : p
+                p.uid === selectedUser.uid ? { ...p, accountStatus: true, suspensionReason: banReason } : p
             );
             setProfessionals(updatedProfessionals);
         }

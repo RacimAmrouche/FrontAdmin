@@ -171,6 +171,12 @@ const VerifProS = () => {
     >
       Moderation
     </Link>
+    <Link
+      to="/RepForm"
+      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+    >
+      Reponse help
+    </Link>
   </div>
 </div>
 
@@ -278,7 +284,7 @@ const VerifProS = () => {
                     <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
-                        src={`http://192.168.163.10:5001/${selectedproS.carteid}`} 
+                        src={`http://192.168.1.102:5001/${selectedproS.carteid}`} 
                         alt="Carte d'identité"
                         className="w-full h-auto object-cover"
                       />
@@ -289,7 +295,7 @@ const VerifProS = () => {
                     <h3 className="font-medium text-[#F05050] mb-2">Certification</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
-                        src={`http://192.168.163.10:5001/${selectedproS.certif}`} 
+                        src={`http://192.168.1.102:5001/${selectedproS.certif}`} 
                         alt="Certification"
                         className="w-full h-auto object-cover"
                       />

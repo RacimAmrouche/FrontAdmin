@@ -28,7 +28,9 @@ const RootLayout = () => {
     "/VerifPat",
     "/Pros",
     "/RedirPros",
-    "/HistPro"
+    "/HistPro",
+    "/RepForm",
+    "/Moderation"
   ];
   
   // Vérifiez si le chemin actuel est dans la liste des chemins sans navbar

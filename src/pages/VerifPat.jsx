@@ -287,7 +287,7 @@ const VerifPat = () => {
                     <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
-                        src={`http://192.168.163.10:5001/${selectedPatient.carteid}`} 
+                        src={`http://192.168.1.102:5001/${selectedPatient.carteid}`} 
                         alt="Carte d'identité"
                         className="w-full h-auto object-cover"
                       />

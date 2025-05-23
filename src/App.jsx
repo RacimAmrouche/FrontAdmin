@@ -31,6 +31,7 @@ import AccountSettings from "./pages/AccountSettings";
 //import { DarkModeProvider } from "./components/layouts/DarkModeContext";
 import ScrollTest from "./pages/tst";
 import Layout from "./components/layouts/layout";
+import RepForm from "./pages/RepForm";
 
 function App() {
   const router = createBrowserRouter(
@@ -51,6 +52,7 @@ function App() {
         <Route path="SupAdminin" element={<SupAdminin />} />
         <Route path="AdminCrea" element={<AdminCrea />} />
         <Route path="Moderation" element={<Moderation />} />
+        <Route path="RepForm" element={<RepForm />} />
       </Route>
     )
   );
