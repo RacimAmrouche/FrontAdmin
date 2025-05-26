@@ -39,9 +39,16 @@ export const signinAdmin = (data ) => {
       },
     });
 }
+export const signinAdminH = (data ) => {
+  return api.post('/auth/signinAdminHopitale', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
 
 export const AddAdmin = (data ) => {
-  return api.post('/auth/AddAdmin', data, {
+  return api.post('/auth/AdminHSignIn', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -49,7 +49,7 @@ const Home = ({ isDarkMode }) => {
                 : "bg-white text-[#f05050] hover:bg-gray-100 shadow-md"
             }`}
           >
-            <a href="/Admincrea" >
+            <a href="/SuperAdmin" >
                         Super admin
                     </a>
           </button>

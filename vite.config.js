@@ -12,7 +12,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: '192.168.163.10', // autorise l'accès par IP locale
-    port: 3000
+    host: '192.168.255.1', // autorise l'accès par IP locale
+    port: 3001
   },
   });

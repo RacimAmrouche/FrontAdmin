@@ -150,22 +150,36 @@ const VerifPat = () => {
   
     <div className="min-h-screen p-4 bg-gray-100">
       <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base">
-      <div className="flex flex-wrap border-b">
+      <div className="flex flex-wrap border-b mt-[51px]">
      <Link
       to="/Admin"
       className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
     >
-      alertes
+      alerts
     </Link>
     <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
-      Verif comptes patients
+    Verify patient accounts
     </button>
+
     <Link
-      to="/VerifPros"
-      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
-    >
-      Vérifier comptes professionnels
-    </Link>
+        to="/VerifPros"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Verify professional accounts
+      </Link>
+      
+      <Link
+        to="/Moderation"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Moderation
+      </Link>
+      <Link
+        to="/RepForm"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Response form
+      </Link>
   </div>
 </div>
 
@@ -287,7 +301,7 @@ const VerifPat = () => {
                     <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
-                        src={`http://192.168.163.10:5001/${selectedPatient.carteid}`} 
+                        src={`http://192.168.255.1:5001/${selectedPatient.carteid}`} 
                         alt="Carte d'identité"
                         className="w-full h-auto object-cover"
                       />

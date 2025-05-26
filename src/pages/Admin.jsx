@@ -238,32 +238,46 @@ const Admin = () => {
   return (
     <div className="min-h-screen p-4 bg-gray-100">
 
-    {/* Onglets de navigation */}
-    <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base mt-[51px]">
-  <div className="flex flex-wrap border-b">
-    <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
-      Alertes
-    </button>
-    <Link
-      to="/VerifPat"
-      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
-    >
-      Vérifier comptes patients
-    </Link>
-    <Link
-      to="/VerifPros"
-      className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
-    >
-      Vérifier comptes professionnels
-    </Link>
-  </div>
-</div>
+    
+      <div className="bg-white rounded-xl shadow-md mb-3 w-full max-w-7xl mx-auto text-base mt-[51px]">
+      <div className="flex flex-wrap border-b">
+      <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
+        Alerts
+      </button>
+      <Link
+        to="/VerifPat"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Verify patient accounts
+      </Link>
+      <Link
+        to="/VerifPros"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Verify professional accounts
+      </Link>
+      
+      <Link
+        to="/Moderation"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Moderation
+      </Link>
+      <Link
+        to="/RepForm"
+        className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+      >
+        Response form
+      </Link>
+
+      </div>
+    </div>
 
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Section carte */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Map section */}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-4">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Live Alerts Map</h2>
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">Carte des alertes en direct</h2>
 
           {/* Conteneur de carte avec hauteur fixe */}
           <div className="h-[500px] rounded-lg overflow-hidden border border-gray-300">
@@ -300,7 +314,7 @@ const Admin = () => {
                       <p className="text-xs text-gray-600">{formatReadableDate(alerti.createdat)}</p>
                       <div className="mt-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alerti.color)}`}>
-                          Urgence:{translateUrgencyLevel(alerti.color)}
+                          Urgence : {translateUrgencyLevel(alerti.color)}
                         </span>
                       </div>
                       
@@ -315,7 +329,7 @@ const Admin = () => {
         {/* Section détails de l'alerte */}
         <div className="bg-white rounded-lg shadow-md py-2 px-4 h-[600px] overflow-y-auto">
           <h2 className="text-xl font-bold text-gray-800 mb-4">
-            {selectedAlert ? "Alert Details" : "Alerts List"}
+            {selectedAlert ? "Détails de l'alerte" : "Liste des alertes"}
           </h2>
 
           {selectedAlert ? (
@@ -327,86 +341,86 @@ const Admin = () => {
                 <span className={`text-xs px-2 py-1 rounded-full ${
                   selectedAlert.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                 }`}>
-                  {selectedAlert.state === 0 ? "Unhandled" : "Being Handled"}
+                  {selectedAlert.state === 0 ? "Non traité" : "En cours de traitement"}
                 </span>
               </div>
               <div className="mb-2">
-                <h4 className="font-medium text-gray-800">Alert Level</h4>
+                <h4 className="font-medium text-gray-800">Niveau d'urgence</h4>
                 <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(selectedAlert.color)}`}>
                   {translateUrgencyLevel(selectedAlert.color)}
                 </span>
               </div>
               
               <div className="mb-2">
-                <h4 className="font-medium text-gray-800">Location</h4>
+                <h4 className="font-medium text-gray-800">Localisation</h4>
                 <p className="text-sm text-gray-700">{selectedAlert.location}</p>
                 <p className="text-xs text-gray-700">
-                  Lat: {selectedAlert.latitudepat}, 
-                  Long: {selectedAlert.longitudepat}
+                  Lat : {selectedAlert.latitudepat}, 
+                  Long : {selectedAlert.longitudepat}
                 </p>
               </div>
               
               <div>
-                <h4 className="font-medium text-gray-800">Timestamp</h4>
+                <h4 className="font-medium text-gray-800">Horodatage</h4>
                 <p className="text-xs text-gray-700">{formatReadableDate(selectedAlert.createdat)}</p>
               </div>
               {/* Informations du patient */}
               <div className="bg-white p-3 rounded-lg border-1 my-3 border-gray-200">
-                <h4 className="font-medium text-gray-800 mb-2">Patient Informations</h4>
+                <h4 className="font-medium text-gray-800 mb-2">Informations du patient</h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                  <p className="text-sm text-gray-600"><p className="font-semibold text-gray-800">UID: </p>{selectedAlert.uid}</p>
+                  <p className="text-sm text-gray-600"><p className="font-semibold text-gray-800">UID : </p>{selectedAlert.uid}</p>
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">Date Of Birth</p>
+                    <p className="text-gray-800 font-semibold">Date de naissance</p>
                     <p className="text-gray-600">{selectedAlert.dateofbirth}</p>
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">Gender</p>
+                    <p className="text-gray-800 font-semibold">Genre</p>
                     <p className="text-gray-600">{capitalizeFirstLetter(selectedAlert.gender)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">Height</p>
+                    <p className="text-gray-800 font-semibold">Taille</p>
                     <p className="text-gray-600">{selectedAlert.height} m</p>
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">Weight</p>
+                    <p className="text-gray-800 font-semibold">Poids</p>
                     <p className="text-gray-600">{selectedAlert.weight} kg</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-800 font-semibold">Phone Number</p>
+                    <p className="text-gray-800 font-semibold">Numéro de téléphone</p>
                     <p className="text-gray-600">{selectedAlert.phoneNumber}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-800 font-semibold">Email:</p>
+                    <p className="text-gray-800 font-semibold">Email :</p>
                     <p className="text-gray-600">{selectedAlert.email}</p>
                   </div>
                 </div>
               </div>
               
               
-               {/* Informations du patient */}
+               {/* Informations du professionnel de santé */}
                <div className="bg-white p-3 rounded-lg border-1 border-gray-200">
-                <h4 className="font-medium text-gray-800 mb-2">Healthcare Professional Informations</h4>
+                <h4 className="font-medium text-gray-800 mb-2">Informations du professionnel de santé</h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-gray-800 font-semibold">Full Name:</p>
+                    <p className="text-gray-800 font-semibold">Nom complet :</p>
                     <p className="text-gray-600">{selectedAlert.firstnamepro} {selectedAlert.lastnamepro}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-800 font-semibold">Phone Number:</p>
+                    <p className="text-gray-800 font-semibold">Numéro de téléphone :</p>
                     <p className="text-gray-600">{selectedAlert.phonenumberpro}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-800 font-semibold">Email:</p>
+                    <p className="text-gray-800 font-semibold">Email :</p>
                     <p className="text-gray-600">{selectedAlert.emailpro}</p>
                   </div>
                   <div>
-                <h4 className="font-medium text-gray-800">Location</h4>
+                <h4 className="font-medium text-gray-800">Localisation</h4>
                 <p className="text-sm text-gray-700">{selectedAlert.locationproS}</p>
                 <p className="text-xs text-gray-700">
-                  Lat: {selectedAlert.latitudeProS}, 
-                  Long: {selectedAlert.longitudeProS}
+                  Lat : {selectedAlert.latitudeProS}, 
+                  Long : {selectedAlert.longitudeProS}
                 </p>
               </div>
                 </div>
@@ -417,14 +431,14 @@ const Admin = () => {
                   onClick={() => setSelectedAlert(null)}
                   className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-[#f05050] hover:text-white transition-colors"
                 >
-                  Back To The List
+                  Retour à la liste
                 </button>
               </div>
             </div>
           ): (
             <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 py-1">
               {tabalerts.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No ongoing alerts.</p>
+                <p className="text-gray-500 text-center py-4">Aucune alerte en cours.</p>
               ) : (
                 tabalerts.map((alerti) => (
                   <div
@@ -442,7 +456,7 @@ const Admin = () => {
                         <span className={`text-xs px-2 py-1 rounded-full mb-1 ${
                           alerti.state === 0 ? "bg-orange-100 text-orange-400" : "bg-green-100 text-green-700"
                         }`}>
-                          {alerti.state === 0 ? "Unhandled" : "Being Handled"}
+                          {alerti.state === 0 ? "Non traité" : "En cours de traitement"}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getUrgencyBadgeClass(alerti.color)}`}>
                           {translateUrgencyLevel(alerti.color)}

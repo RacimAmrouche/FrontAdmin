@@ -103,3 +103,28 @@ export const AllProS = (data ) => {
       },
     });
 }
+
+export const AllHelp = (data ) => {
+  return api.post('/Admin/ListHelpForms', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
+
+export const RepHelp = (data ) => {
+  return api.post('/Admin/HelpFormResponse', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
+export const BanUser = (data ) => {
+  return api.post('/Admin/BanUser', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
+
+

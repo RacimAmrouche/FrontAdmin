@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
-import { signinPatient } from '../../services/auth';
+import { signinAdminH } from '../../services/auth';
 
 const AdminHin = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -11,17 +11,17 @@ const AdminHin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    formData.append('Role', "40");
-  
+    formData.append('Role', "30");
+  formData.append
   try{
          
          console.log("ici")
-     const response = await signinAdmin(formData)
+     const response = await signinAdminH(formData)
      const data = response.data; 
      console.log("Réponse du back :", data);
      localStorage.setItem('user', JSON.stringify(data));
      alert('Succès ✅');
-     navigate("/Admin");
+     navigate("/AdminH");
      } catch (error) {
          alert('Erreur ❌');
          console.log("erreur", error);
@@ -127,8 +127,8 @@ return (
                             <div className="relative">
                             <input
                                 type={showPassword ? "text" : "password"}
-                                id="Key"
-                                name="Key"
+                                id="UIDKEY"
+                                name="UIDKEY"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F05050] focus:border-transparent transition-all pr-10"
                                 required
                             />
@@ -168,8 +168,8 @@ return (
                     >
                         Se connecter
                     </button>
-                    <a href="/Admin" className="text-[#F05050] hover:underline font-medium">
-                        lancer admin
+                    <a href="/AdminH" className="text-[#F05050] hover:underline font-medium">
+                        lancer adminH
                     </a>
                 </form>
 

@@ -30,6 +30,9 @@ import Moderation from "./pages/Moderation";
 import AccountSettings from "./pages/AccountSettings";
 //import { DarkModeProvider } from "./components/layouts/DarkModeContext";
 import ScrollTest from "./pages/tst";
+import RepForm from "./pages/RepForm";
+import AdminH from "./pages/AdminH";
+import SuperAdmin from "./pages/SuperAdmin";
 import Layout from "./components/layouts/layout";
 
 function App() {
@@ -51,6 +54,9 @@ function App() {
         <Route path="SupAdminin" element={<SupAdminin />} />
         <Route path="AdminCrea" element={<AdminCrea />} />
         <Route path="Moderation" element={<Moderation />} />
+        <Route path="RepForm" element={<RepForm />} />
+        <Route path="AdminH" element={<AdminH />} />
+        <Route path="SuperAdmin" element={<SuperAdmin />} />
       </Route>
     )
   );
