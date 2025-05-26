@@ -34,6 +34,7 @@ import RepForm from "./pages/RepForm";
 import AdminH from "./pages/AdminH";
 import SuperAdmin from "./pages/SuperAdmin";
 import Layout from "./components/layouts/layout";
+import SuperModeration from "./pages/SuperModeration";
 
 function App() {
   const router = createBrowserRouter(
@@ -57,6 +58,7 @@ function App() {
         <Route path="RepForm" element={<RepForm />} />
         <Route path="AdminH" element={<AdminH />} />
         <Route path="SuperAdmin" element={<SuperAdmin />} />
+        <Route path="SuperModeration" element={<SuperModeration />} />
       </Route>
     )
   );

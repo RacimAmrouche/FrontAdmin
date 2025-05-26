@@ -136,11 +136,11 @@ const AdminH = () => {
     const isAvailable = Number(ambulance.isAmbulanceAvailable) === 1
 
     if (isReady && isAvailable) {
-      return "Disponible"
+      return "Available"
     } else if (!isReady && isAvailable) {
-      return "Indisponible" // Changed back from "Unavailable"
+      return "Unavailable" // Changed back from "Unavailable"
     } else if (!isReady && !isAvailable) {
-      return "En panne"
+      return "Out of service"
     } else {
       return "Statut inconnu"
     }
@@ -151,11 +151,11 @@ const AdminH = () => {
     const status = getAmbulanceStatus(ambulance)
 
     switch (status) {
-      case "Disponible":
+      case "Available":
         return "bg-green-100 text-green-800"
-      case "Indisponible": // Changed back from "Unavailable"
+      case "Unavailable": // Changed back from "Unavailable"
         return "bg-red-100 text-red-800"
-      case "En panne":
+      case "Out of service":
         return "bg-yellow-100 text-yellow-800"
       default:
         return "bg-gray-100 text-gray-800"
@@ -167,14 +167,14 @@ const AdminH = () => {
     const status = getAmbulanceStatus(ambulance)
 
     switch (status) {
-      case "Disponible":
-        return " Marquer comme indisponible"
-      case "Indisponible": // Changed back from "Unavailable"
-        return " Marquer comme disponible"
-      case "En panne":
-        return " Marquer comme indisponible"
+      case "Available":
+        return "Mark as unavailable"
+      case "Unavailable": // Changed back from "Unavailable"
+        return "Mark as available"
+      case "Out of service":
+        return "Mark as unavailable"
       default:
-        return "Changer le statut"
+        return "Change status"
     }
   }
 
@@ -230,7 +230,7 @@ const AdminH = () => {
     const status = getAmbulanceStatus(ambulance)
 
     // Si l'ambulance est disponible, la rendre indisponible, sinon la rendre disponible
-    const newStatus = status === "Disponible" ? "0" : "1"
+    const newStatus = status === "Available" ? "0" : "1"
     await updateAmbulanceStatus(ambulance.idEmbulance, newStatus)
   }
 
@@ -374,7 +374,7 @@ const AdminH = () => {
       id: "",
       immatriculation: "",
       modele: "",
-      statut: "disponible",
+      statut: "Available",
       latitude: userLocation.lat,
       longitude: userLocation.lng,
     })
@@ -384,12 +384,12 @@ const AdminH = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 pt-28">
-      <h1 className="text-3xl font-bold text-gray-800 mb-5">Tableau de bord - Responsable d'hôpital</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-5">Dashboard - Hospital Admin</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Section carte */}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-md  p-4">
-          <h2 className="text-2xl font-bold text-[#F05050] mb-2">Carte </h2>
+          <h2 className="text-2xl font-bold text-[#F05050] mb-2">Map</h2>
 
           {/* Conteneur de carte avec hauteur fixe */}
           <div className="h-[500px] rounded-lg overflow-hidden border border-gray-300">
@@ -422,11 +422,11 @@ const AdminH = () => {
                         <span className="popup-value">{ambulancei.idEmbulance}</span>
                       </div>
                       <div className="popup-info">
-                        <span className="popup-label">Matricule:</span>
+                        <span className="popup-label">Registration:</span>
                         <span className="popup-value">{ambulancei.matricule}</span>
                       </div>
                       <div className="popup-info">
-                        <span className="popup-label">Statut:</span>
+                        <span className="popup-label">Status:</span>
                         <span className="popup-value">{getAmbulanceStatus(ambulancei)}</span>
                       </div>
                     </div>
@@ -439,14 +439,14 @@ const AdminH = () => {
 
         {/* Section gestion des ambulances */}
         <div className="bg-white rounded-lg shadow-md pt-5 p-4 mt-10">
-          <h2 className="text-2xl font-bold text-[#F05050] mb-2">Gestion des ambulances</h2>
+          <h2 className="text-2xl font-bold text-[#F05050] mb-2">Ambulance Management</h2>
 
           {/* Formulaire d'ajout d'ambulance */}
           <form onSubmit={handleSubmit} className="">
             <div className="space-y-4">
               <div>
                 <label htmlFor="Matricule" className="block text-sm font-medium text-gray-700 mb-1">
-                  Immatriculation
+                  Registration
                 </label>
                 <input
                   type="text"
@@ -455,7 +455,7 @@ const AdminH = () => {
                   onChange={handleInputChange}
                   placeholder="Ex: 1493710231"
                   pattern="\d{10}"
-                  title="L'immatriculation doit contenir exactement 10 caractères numériques."
+                  title="The registration must contain exactly 10 numeric characters."
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F05050] focus:border-transparent"
                   required
                 />
@@ -465,18 +465,18 @@ const AdminH = () => {
                 type="submit"
                 className="w-full py-2 px-4 bg-[#F05050] text-white font-medium rounded-md hover:bg-[#D32F2F] transition-colors"
               >
-                Ajouter une ambulance
+                Add an ambulance
               </button>
             </div>
           </form>
 
           {/* Liste des ambulances */}
           <div>
-            <h3 className="text-lg font-medium text-gray-700 mb-3">Liste des ambulances</h3>
+            <h3 className="text-lg font-medium text-gray-700 mt-6 mb-3">Ambulance List</h3>
 
             <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
               {ambulances.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Aucune ambulance enregistrée</p>
+                <p className="text-gray-500 text-center py-4">No ambulance registered</p>
               ) : (
                 ambulances.map((ambulance) => (
                   <div key={ambulance.idEmbulance} className="border border-gray-200 rounded-md p-3 bg-gray-50">
@@ -494,7 +494,7 @@ const AdminH = () => {
                         onClick={() => deleteAmbulance(ambulance.idEmbulance)}
                         disabled={deletingAmbulance[ambulance.idEmbulance]}
                         className="text-red-500 hover:text-red-700 transition-colors disabled:opacity-50"
-                        aria-label="Supprimer"
+                        aria-label="Delete"
                       >
                         {deletingAmbulance[ambulance.idEmbulance] ? (
                           <svg
@@ -536,14 +536,14 @@ const AdminH = () => {
 
                     {/* Section de modification du statut */}
                     <div className="border-t pt-3">
-                      <div className="text-sm font-medium text-gray-700 mb-2">Modifier le statut:</div>
+                      <div className="text-sm font-medium text-gray-700 mb-2">Change status:</div>
                       <div className="grid grid-cols-1 gap-2">
                         {/* Bouton toggle principal pour disponible/indisponible */}
                         <button
                           onClick={() => toggleAmbulanceStatus(ambulance)}
                           disabled={updatingStatus[ambulance.idEmbulance]}
                           className={`px-3 py-2 text-sm rounded-md hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                            getAmbulanceStatus(ambulance) === "Disponible"
+                            getAmbulanceStatus(ambulance) === "Available"
                               ? "bg-green-100 text-green-800 hover:bg-green-200"
                               : "bg-red-100 text-red-800 hover:bg-red-200"
                           }`}
@@ -552,13 +552,13 @@ const AdminH = () => {
                         </button>
 
                         {/* Bouton pour marquer en panne - seulement si l'ambulance n'est pas déjà en panne */}
-                        {getAmbulanceStatus(ambulance) !== "En panne" && (
+                        {getAmbulanceStatus(ambulance) !== "Out of service" && (
                           <button
                             onClick={() => updateAmbulanceStatus(ambulance.idEmbulance, "2")}
                             disabled={updatingStatus[ambulance.idEmbulance]}
                             className="px-3 py-2 text-sm bg-yellow-100 text-yellow-800 rounded-md hover:bg-yellow-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {updatingStatus[ambulance.idEmbulance] ? "..." : "Marquer en panne"}
+                            {updatingStatus[ambulance.idEmbulance] ? "..." : "Mark as out of service"}
                           </button>
                         )}
                       </div>

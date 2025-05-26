@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { AllHelp, RepHelp } from "../../services/Admin"
+import logo from "../assets/logovide.png"
+import { Link } from "react-router-dom"
 
 const RepForm = () => {
   const navigate = useNavigate()
@@ -147,9 +149,10 @@ const RepForm = () => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    }
-    return new Date(dateString).toLocaleDateString("fr-FR", options)
-  }
+    };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  };
+  
 
   // Obtenir le temps écoulé depuis l'envoi du message
   const getTimeElapsed = (dateString) => {
@@ -162,12 +165,12 @@ const RepForm = () => {
     const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24))
 
     if (diffInDays > 0) {
-      return `il y a ${diffInDays} jour${diffInDays > 1 ? "s" : ""}`
-    } else if (diffInHours > 0) {
-      return `il y a ${diffInHours} heure${diffInHours > 1 ? "s" : ""}`
-    } else {
-      return `il y a ${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""}`
-    }
+      return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`
+        } else if (diffInHours > 0) {
+      return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`
+        } else {
+      return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`
+        }
   }
 
   // Rendu des icônes
@@ -348,16 +351,55 @@ const RepForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800">
+    <div className="min-h-screen p-4 bg-gray-100">
       {/* Header */}
-      <div className={`${isDark ? "bg-gray-800" : "bg-white"} shadow-md p-4`}>
-        <div className="container mx-auto">
-          <h1 className="text-2xl font-bold">Help Requests Management</h1>
-          <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-            Respond to user questions and issues
-          </p>
-        </div>
-      </div>
+              <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base">
+                   <div className=" flex flex-wrap border-b mt-[51px]">
+                        {/* Logo + Nom app */}
+                                   <div className="flex items-center px-6 py-4 mr-6">
+                               <img src={logo} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
+                               <span className="font-bold text-xl text-[#F05050]">E-mergency</span>
+                             </div>
+                     
+             
+             
+             
+                  <Link
+                   to="/Admin"
+                   className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+                 >
+                   Alerts
+                 </Link>
+                 <Link
+                   to="/VerifPat"
+                   className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+                 >
+                      Verify patient accounts
+                 </Link>
+             
+                 <Link
+                     to="/VerifPros"
+                     className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+                   >
+                      Verify heatlhcare pro accounts
+                   </Link>
+                   <Link  
+                 
+                 to="/Moderation"
+                     className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
+                   >
+                     Moderation
+                   </Link>
+      
+                 <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
+             
+                 Response form
+                 </button>
+                 
+      
+               
+               </div>
+             </div>
 
       {/* Main Content */}
       <div className="container mx-auto p-4">

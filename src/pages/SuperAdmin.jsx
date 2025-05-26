@@ -6,6 +6,8 @@ import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import { ListeAlertes } from "../../services/Admin"
 import { GetInfoAlert } from "../../services/Admin"
+import logo from "../assets/logovide.png"
+
 
 // Correction pour les icônes Leaflet
 delete L.Icon.Default.prototype._getIconUrl
@@ -761,28 +763,30 @@ const SuperAdmin = () => {
   return (
     <div className="min-h-screen p-4 bg-gray-100">
       {/* Onglets de navigation */}
-      <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base mt-[51px]">
-        <div className="flex flex-wrap border-b overflow-x-auto">
-          <button
-            className={`px-8 py-4 font-semibold ${activeTab === "alerts" ? "text-[#F05050] border-b-4 border-[#F05050]" : "text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050]"} transition-all`}
-            onClick={() => setActiveTab("alerts")}
-          >
-            Alertes
+      <div className="bg-white rounded-xl shadow-md mb-3 w-full max-w-7xl mx-auto text-base mt-[51px]">
+        <div className="flex flex-nowrap items-center border-b">
+          {/* Logo + Nom app */}
+          <div className="flex items-center px-6 py-4 mr-6">
+            <img src={logo} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
+            <span className="font-bold text-xl text-[#F05050]">E-mergency</span>
+          </div>
+          <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
+            Alerts
           </button>
           <Link
             to="/VerifPat"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Vérifier comptes patients
+            Verify patient account
           </Link>
           <Link
             to="/VerifPros"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Vérifier comptes professionnels
+            Verify heatlhcare pro account
           </Link>
           <Link
-            to="/Moderation"
+            to="/SuperModeration"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Moderation
@@ -791,24 +795,22 @@ const SuperAdmin = () => {
             to="/RepForm"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            RepForm
+            Response form
           </Link>
           <Link
             to="/AdminCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Admincrea
+            Creat Admin
           </Link>
           <Link
-            to="/AdminHcrea"
+            to="/AdminHCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            AdminHcrea
+            Creat AdminH
           </Link>
-
         </div>
       </div>
-
       {/* Contenu de l'onglet actif */}
       {renderTabContent()}
     </div>

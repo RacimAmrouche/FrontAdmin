@@ -6,6 +6,7 @@ import Layout from "../components/layouts/layout"
 import { ListProVal, RejectUser } from "../../services/Admin"
 import { GetInfoPro } from "../../services/Admin"
 import { ValidateUser } from "../../services/Admin"
+import logo from "../assets/logovide.png"
 
 const VerifProS = () => {
   // État pour stocker la liste des patients en attente de vérification
@@ -149,12 +150,21 @@ const VerifProS = () => {
   
     <div className="min-h-screen p-4 bg-gray-100">
       <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base">
-      <div className=" flex-wrap border-b mt-[51px]">
+      <div className=" flex flex-wrap border-b mt-[51px]">
+           {/* Logo + Nom app */}
+                      <div className="flex items-center px-6 py-4 mr-6">
+                  <img src={logo} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
+                  <span className="font-bold text-xl text-[#F05050]">E-mergency</span>
+                </div>
+        
+
+
+
      <Link
       to="/Admin"
       className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
     >
-      alerts
+      Alerts
     </Link>
     <Link
       to="/VerifPat"
@@ -164,7 +174,7 @@ const VerifProS = () => {
     </Link>
     <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
 
-    Verify professional accounts
+    Verify healthcare pro accounts
     </button>
     <Link
         to="/Moderation"
@@ -182,7 +192,7 @@ const VerifProS = () => {
 </div>
 
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Vérification des proSs</h1>
+  
 
         {/* Notification */}
         {notification.show && (
@@ -196,10 +206,10 @@ const VerifProS = () => {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Liste des patients en attente */}
           <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-4">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">proSs en attente de vérification</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-700">Pending healthcare pros for verification</h2>
 
             {pendingproSs.length === 0 ? (
-              <p className="text-gray-500">Aucun proS en attente de vérification</p>
+              <p className="text-gray-500">No healthcare pro pending verification</p>
             ) : (
               <ul className="space-y-2">
                 {pendingproSs.map((proS) => (
@@ -224,13 +234,13 @@ const VerifProS = () => {
           <div className="w-full md:w-2/3 overflow-y-auto max-h-[400px] bg-white rounded-lg shadow p-4">
             {selectedproS ? (
               <div>
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Détails du proS</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-700">Healthcare pro details</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Informations du patient */}
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-[#F05050]">Informations personnelles</h3>
+                      <h3 className="font-medium text-[#F05050]">Personal information</h3>
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         <div>
                           <span className="font-medium text-gray-600">Full Name:</span>
@@ -247,7 +257,7 @@ const VerifProS = () => {
                           <span className="ml-2 text-black">{selectedproS.confmail}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Téléphone:</span>
+                          <span className="font-medium text-gray-600">Phone:</span>
                           <span className="ml-2 text-black">{selectedproS.phoneNumber}</span>
                         </div>
                         <div>
@@ -256,24 +266,24 @@ const VerifProS = () => {
                         </div>
                         <div>
                           <span className="font-medium text-gray-600">Age:</span>
-                          <span className="ml-2 text-black">{selectedproS.age} ans</span>
+                          <span className="ml-2 text-black">{selectedproS.age} years</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Date de naissance:</span>
+                          <span className="font-medium text-gray-600">Date of birth:</span>
                           <span className="ml-2 text-black">{selectedproS.dateofbirth}</span>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-medium text-[#F05050]">Adresse</h3>
+                      <h3 className="font-medium text-[#F05050]">Address</h3>
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         <div>
-                          <span className="font-medium text-gray-600">Adresse:</span>
+                          <span className="font-medium text-gray-600">Address:</span>
                           <span className="ml-2 text-black">{selectedproS.adress}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Code postal:</span>
+                          <span className="font-medium text-gray-600">Postal code:</span>
                           <span className="ml-2 text-black">{selectedproS.postalcode}</span>
                         </div>
                       </div>
@@ -282,11 +292,11 @@ const VerifProS = () => {
 
                   {/* Photo de la carte d'identité */}
                   <div>
-                    <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
+                    <h3 className="font-medium text-[#F05050] mb-2">ID card</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
                         src={`http://192.168.255.1:5001/${selectedproS.carteid}`} 
-                        alt="Carte d'identité"
+                        alt="ID card"
                         className="w-full h-auto object-cover"
                       />
                     </div>
@@ -311,13 +321,13 @@ const VerifProS = () => {
                     onClick={() => handleRejectproS(selectedproS.id)}
                     className="px-4 py-2 bg-[#F05050] text-white font-medium rounded hover:bg-red-600 transition-colors duration-200"
                   >
-                    Rejeter
+                    Reject
                   </button>
                   <button
                     onClick={() => handleValidateproS(selectedproS.id)}
                     className="px-4 py-2 bg-green-700 text-white font-medium rounded hover:bg-green-600 transition-colors duration-200"
                   >
-                    Valider
+                    Validate
                   </button>
                   <button
                     onClick={() => setSelectedproS(null)}
@@ -329,7 +339,7 @@ const VerifProS = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-64">
-                <p className="text-gray-500 text-lg">Sélectionnez un proS pour voir ses détails</p>
+                <p className="text-gray-500 text-lg">Select a healthcare pro to see details</p>
               </div>
             )}
           </div>

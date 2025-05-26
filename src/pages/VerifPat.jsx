@@ -6,6 +6,7 @@ import Layout from "../components/layouts/layout"
 import { ListPatVal, RejectUser } from "../../services/Admin"
 import { GetInfoPat } from "../../services/Admin"
 import { ValidateUser } from "../../services/Admin"
+import logo from "../assets/logovide.png"
 
 const VerifPat = () => {
   // État pour stocker la liste des patients en attente de vérification
@@ -151,11 +152,16 @@ const VerifPat = () => {
     <div className="min-h-screen p-4 bg-gray-100">
       <div className="bg-white rounded-xl shadow-md mb-6 w-full max-w-7xl mx-auto text-base">
       <div className="flex flex-wrap border-b mt-[51px]">
+         {/* Logo + Nom app */}
+                      <div className="flex items-center px-6 py-4 mr-6">
+                  <img src={logo} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
+                  <span className="font-bold text-xl text-[#F05050]">E-mergency</span>
+                </div>
      <Link
       to="/Admin"
       className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
     >
-      alerts
+      Alerts
     </Link>
     <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">
     Verify patient accounts
@@ -165,7 +171,7 @@ const VerifPat = () => {
         to="/VerifPros"
         className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
       >
-        Verify professional accounts
+        Verify heatlhcare pro accounts
       </Link>
       
       <Link
@@ -184,7 +190,7 @@ const VerifPat = () => {
 </div>
 
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Vérification des Patients</h1>
+
 
         {/* Notification */}
         {notification.show && (
@@ -198,10 +204,10 @@ const VerifPat = () => {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Liste des patients en attente */}
           <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-4">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Patients en attente de vérification</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-700">Patients pending verification</h2>
 
             {pendingPatients.length === 0 ? (
-              <p className="text-gray-500">Aucun patient en attente de vérification</p>
+              <p className="text-gray-500">No patient pending verification</p>
             ) : (
               <ul className="space-y-2">
                 {pendingPatients.map((patient) => (
@@ -226,13 +232,13 @@ const VerifPat = () => {
           <div className="w-full md:w-2/3 overflow-y-auto max-h-[400px] bg-white rounded-lg shadow p-4">
             {selectedPatient ? (
               <div>
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Détails du patient</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-700">Patient details</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Informations du patient */}
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-[#F05050]">Informations personnelles</h3>
+                      <h3 className="font-medium text-[#F05050]">Personal information</h3>
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         <div>
                           <span className="font-medium text-gray-600">Full Name:</span>
@@ -249,7 +255,7 @@ const VerifPat = () => {
                           <span className="ml-2 text-black">{selectedPatient.confmail}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Téléphone:</span>
+                          <span className="font-medium text-gray-600">Phone:</span>
                           <span className="ml-2 text-black">{selectedPatient.phoneNumber}</span>
                         </div>
                         <div>
@@ -258,38 +264,38 @@ const VerifPat = () => {
                         </div>
                         <div>
                           <span className="font-medium text-gray-600">Age:</span>
-                          <span className="ml-2 text-black">{selectedPatient.age} ans</span>
+                          <span className="ml-2 text-black">{selectedPatient.age} years</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Date de naissance:</span>
+                          <span className="font-medium text-gray-600">Date of birth:</span>
                           <span className="ml-2 text-black">{selectedPatient.dateofbirth}</span>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-medium text-[#F05050]">Informations médicales</h3>
+                      <h3 className="font-medium text-[#F05050]">Medical information</h3>
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         <div>
-                          <span className="font-medium text-gray-600">Taille:</span>
+                          <span className="font-medium text-gray-600">Height:</span>
                           <span className="ml-2 text-black">{selectedPatient.height}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Poids:</span>
+                          <span className="font-medium text-gray-600">Weight:</span>
                           <span className="ml-2 text-black">{selectedPatient.weight}</span>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-medium text-[#F05050]">Adresse</h3>
+                      <h3 className="font-medium text-[#F05050]">Address</h3>
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         <div>
-                          <span className="font-medium text-gray-600">Adresse:</span>
+                          <span className="font-medium text-gray-600">Address:</span>
                           <span className="ml-2 text-black">{selectedPatient.adress}</span>
                         </div>
                         <div>
-                          <span className="font-medium text-gray-600">Code postal:</span>
+                          <span className="font-medium text-gray-600">Postal code:</span>
                           <span className="ml-2 text-black">{selectedPatient.postalcode}</span>
                         </div>
                       </div>
@@ -298,11 +304,11 @@ const VerifPat = () => {
 
                   {/* Photo de la carte d'identité */}
                   <div>
-                    <h3 className="font-medium text-[#F05050] mb-2">Carte d'identité</h3>
+                    <h3 className="font-medium text-[#F05050] mb-2">ID card</h3>
                     <div className="border border-gray-300 rounded-lg overflow-hidden">
                       <img
                         src={`http://192.168.255.1:5001/${selectedPatient.carteid}`} 
-                        alt="Carte d'identité"
+                        alt="ID card"
                         className="w-full h-auto object-cover"
                       />
                     </div>
@@ -315,13 +321,13 @@ const VerifPat = () => {
                     onClick={() => handleRejectPatient(selectedPatient.id)}
                     className="px-4 py-2 bg-[#F05050] text-white font-medium rounded hover:bg-red-600 transition-colors duration-200"
                   >
-                    Rejeter
+                    Reject
                   </button>
                   <button
                     onClick={() => handleValidatePatient(selectedPatient.id)}
                     className="px-4 py-2 bg-green-700 text-white font-medium rounded hover:bg-green-600 transition-colors duration-200"
                   >
-                    Valider
+                    Validate
                   </button>
                   <button
                     onClick={() => setSelectedPatient(null)}
@@ -333,7 +339,7 @@ const VerifPat = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-64">
-                <p className="text-gray-500 text-lg">Sélectionnez un patient pour voir ses détails</p>
+                <p className="text-gray-500 text-lg">Select a patient to see details</p>
               </div>
             )}
           </div>
@@ -345,4 +351,7 @@ const VerifPat = () => {
 }
 
 export default VerifPat
+
+
+
 
