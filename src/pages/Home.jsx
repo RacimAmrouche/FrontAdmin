@@ -1,82 +1,122 @@
-"use client"
-import { useState, useEffect } from "react"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Shield, Hospital, Crown } from "lucide-react";
+import logovide from "../assets/logovide.png";
 
-const Home = ({ isDarkMode }) => {
-  const [textColor, setTextColor] = useState("text-white")
+const Home = () => {
+  const [activeItem, setActiveItem] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isDarkMode) {
-      setTextColor("text-black")
-    } else {
-      setTextColor("text-white")
+  const handleNavigate = (item) => {
+    setActiveItem(item);
+    setIsMobileMenuOpen(false);
+
+    switch (item) {
+      case "Adminin":
+        navigate("/Adminin");
+        break;
+      case "AdminHin":
+        navigate("/AdminHin");
+        break;
+      case "SupAdminin":
+        navigate("/SupAdminin");
+        break;
+      default:
+        break;
     }
-  }, [isDarkMode])
+  };
 
   return (
-    <div
-      className={`min-h-screen flex flex-col items-center justify-center ${isDarkMode ? "bg-gray-100" : "bg-[#f05050]"} transition-all duration-300`}
-    >
-      {/* Logo */}
-      <div className="mb-8">
-        <img src="/path-to-your-big-logo.svg" alt="E-mergency Icon" className="h-32 w-32 opacity-80" />
-      </div>
-
-      {/* Titre */}
-      <h1 className={`text-4xl font-bold mb-12 ${textColor}`}>E-MERGENCY ADMIN</h1>
-
-      {/* Question */}
-      <div className={`text-center mb-10`}>
-        <h2 className={`text-2xl font-semibold mb-8 ${textColor}`}>Qui êtes-vous ?</h2>
-
-        {/* Boutons */}
-        <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-6">
-          <button
-            className={`px-8 py-4 rounded-lg text-lg font-medium transition-colors ${
-              isDarkMode
-                ? "bg-white text-gray-900 hover:bg-gray-200 shadow-md"
-                : "bg-white text-[#f05050] hover:bg-gray-100 shadow-md"
-            }`}
-          >
-              <a href="/Adminin" >
-                        Admin
-                    </a>
-          </button>
-
-          <button
-            className={`px-8 py-4 rounded-lg text-lg font-medium transition-colors ${
-              isDarkMode
-                ? "bg-white text-gray-900 hover:bg-gray-200 shadow-md"
-                : "bg-white text-[#f05050] hover:bg-gray-100 shadow-md"
-            }`}
-          >
-            <a href="/SuperAdmin" >
-                        Super admin
-                    </a>
-          </button>
-
-          <button
-            className={`px-8 py-4 rounded-lg text-lg font-medium transition-colors ${
-              isDarkMode
-                ? "bg-white text-gray-900 hover:bg-gray-200 shadow-md"
-                : "bg-white text-[#f05050] hover:bg-gray-100 shadow-md"
-            }`}
-          >
-             <a href="/AdminHin" >
-                        AdminH
-                    </a>
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 mt-5">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-red-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <img src={logovide} alt="E-Mergency Logo" className="h-10 w-10" />
+              <h3 className="text-2xl font-bold text-gray-900">E-Mergency</h3>
+            </div>
+            <div className="text-sm text-gray-500">Administration Platform</div>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Texte d'aide */}
-      <p className={`text-center mt-8 max-w-md ${isDarkMode ? "text-gray-600" : "text-white opacity-90"}`}>
-        Sélectionnez votre type d'accès pour continuer vers l'interface d'administration appropriée.
-      </p>
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Administrator Dashboard</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Choose your access level to manage the E-Mergency platform
+          </p>
+        </div>
+
+        {/* Admin Cards */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Admin Standard */}
+          <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 hover:border-[#f05050]/20 p-6">
+            <div className="text-center pb-4">
+              <div className="mx-auto bg-[#f05050]/10 p-4 rounded-full w-20 h-20 flex items-center justify-center mb-4">
+                <Shield className="h-10 w-10 text-[#f05050]" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Administrator</h3>
+              <p className="text-gray-600">General platform management</p>
+            </div>
+            <div className="space-y-4">
+              <button
+                className="w-full bg-[#f05050] hover:bg-[#d63d3d] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                onClick={() => handleNavigate("Adminin")}
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
+
+          {/* Hospital Admin */}
+          <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 hover:border-[#f05050]/20 p-6">
+            <div className="text-center pb-4">
+              <div className="mx-auto bg-[#f05050]/10 p-4 rounded-full w-20 h-20 flex items-center justify-center mb-4">
+                <Hospital className="h-10 w-10 text-[#f05050]" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Hospital Admin</h3>
+              <p className="text-gray-600">Hospital-specific management</p>
+            </div>
+            <div className="space-y-4">
+              <button
+                className="w-full bg-[#f05050] hover:bg-[#d63d3d] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                onClick={() => handleNavigate("AdminHin")}
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
+
+          {/* Super Admin */}
+          <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 hover:border-[#f05050]/20 p-6">
+            <div className="text-center pb-4">
+              <div className="mx-auto bg-[#f05050]/10 p-4 rounded-full w-20 h-20 flex items-center justify-center mb-4">
+                <Crown className="h-10 w-10 text-[#f05050]" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Super Admin</h3>
+              <p className="text-gray-600">Full system control</p>
+            </div>
+            <div className="space-y-4">
+              <button
+                className="w-full bg-[#f05050] hover:bg-[#d63d3d] text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                onClick={() => handleNavigate("SupAdminin")}
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
+
 
 
 

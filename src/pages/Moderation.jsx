@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { AllPat, AllProS, SuspendUser, BanUser } from "../../services/Admin"
+import { AllPat, AllProS, SuspendUser, BanUser,UnSus } from "../../services/Admin"
 import logo from "../assets/logovide.png"
 import { Link } from "react-router-dom"
 
@@ -70,21 +70,40 @@ const Moderation = () => {
     setIsBanModalOpen(true)
   }
 
-  // Gérer la levée de suspension d'un utilisateur
-  const handleUnsuspendUser = (user) => {
-    if (activeTab === "patients") {
-      const updatedPatients = patients.map((p) =>
-        p.id === user.id ? { ...p, status: "active", suspensionReason: null } : p,
-      )
-      setPatients(updatedPatients)
-    } else {
-      const updatedProfessionals = professionals.map((p) =>
-        p.id === user.id ? { ...p, status: "active", suspensionReason: null } : p,
-      )
-      setProfessionals(updatedProfessionals)
-    }
-  }
 
+
+  const handleUnsuspendUser = async (user) => {
+    try {
+      const role = activeTab === "patients" ? "10" : "20";
+  
+      const formData = new FormData();
+      formData.append("id", user.uid);
+      console.log("user id",user.uid)   // UID côté backend
+      formData.append("role", role);    // "10" pour patient, "20" pour pro
+      console.log("Form data:", formData);
+  
+      const response = await UnSus( formData);
+  
+      // Met à jour le state local en fonction du rôle
+      if (activeTab === "patients") {
+        const updatedPatients = patients.map((p) =>
+          p.id === user.id ? { ...p, status: "active", suspensionReason: null } : p
+        );
+        setPatients(updatedPatients);
+      } else {
+        const updatedProfessionals = professionals.map((p) =>
+          p.id === user.id ? { ...p, status: "active", suspensionReason: null } : p
+        );
+        setProfessionals(updatedProfessionals);
+      }
+  
+      console.log("Un-suspension réussie :", response.data);
+    } catch (error) {
+      console.error("Erreur lors de la levée de suspension :", error);
+      alert("Une erreur est survenue lors de la levée de la suspension.");
+    }
+  };
+  
   // Afficher les informations de l'utilisateur
   const handleShowUserInfo = (user) => {
     setSelectedUser(user)

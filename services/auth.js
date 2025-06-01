@@ -46,12 +46,27 @@ export const signinAdminH = (data ) => {
       },
     });
 }
-
-export const AddAdmin = (data ) => {
-  return api.post('/auth/AdminHSignIn', data, {
+export const signinSuperAdmin= (data ) => {
+  return api.post('/auth/signinSuperAdmin', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 }
+
+export const AddAdmin = (data ) => {
+  return api.post('/auth/AddAdmin', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
+
+export const AddAdminH = (data ) => {
+  return api.post('/AdminH/AddAdminH/AddAdminH', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+};
 

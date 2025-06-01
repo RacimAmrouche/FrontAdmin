@@ -774,13 +774,13 @@ const SuperAdmin = () => {
             Alerts
           </button>
           <Link
-            to="/VerifPat"
+            to="/VerifPat2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify patient account
           </Link>
           <Link
-            to="/VerifPros"
+            to="/VerifPros2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify heatlhcare pro account
@@ -792,7 +792,7 @@ const SuperAdmin = () => {
             Moderation
           </Link>
           <Link
-            to="/RepForm"
+            to="/RepForm2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Response form

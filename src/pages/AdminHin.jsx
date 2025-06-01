@@ -32,38 +32,26 @@ const AdminHin = () => {
 return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="w-full max-w-4xl flex overflow-hidden rounded-2xl shadow-xl">
-            {/* Section gauche - Image/Bannière */}
+            {/* Left Section - Image/Banner */}
             <div className="hidden md:block w-2/5 bg-gradient-to-b from-[#F05050] to-[#D32F2F] p-12 text-white">
                 <div className="h-full flex flex-col justify-between">
                     <div>
-                        <h2 className="text-3xl font-bold mb-6">Bienvenue chez E-mergency</h2>
-                       
+                        <h2 className="text-3xl font-bold mb-6">Welcome to E-mergency</h2>
                     </div>
                     <div>
-                        <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-                            <p className="italic text-sm">
-                                "test"
-                            </p>
-                            <p className="mt-2 font-semibold"> 1 2 3 </p>
-                        </div>
+                      
                     </div>
                 </div>
             </div>
 
-            {/* Section droite - Formulaire */}
+            {/* Right Section - Form */}
             <div className="w-full md:w-3/5 bg-white p-8">
                 <div className="text-center mb-8">
-                    <h1 className="text-2xl font-bold text-[#F05050] mb-2">Se connecter en tant qu'Admin</h1>
-                    <p className="text-gray-500">saissez vos données pour accéder à votre</p>
+                    <h1 className="text-2xl font-bold text-[#F05050] mb-2">Sign in as Hospital Admin</h1>
+                    <p className="text-gray-500">Enter your details to access your account</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                   
-
-                   
-
-                 
-
                     <div className="grid grid-cols-1  gap-5">
                         <div>
                             <label htmlFor="Email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -77,12 +65,11 @@ return (
                                 required
                             />
                         </div>
-                         </div>
+                    </div>
 
-                
                     <div>
                         <label htmlFor="PasswordHash" className="block text-sm font-medium text-gray-700 mb-1">
-                            Mot de passe
+                            Password
                         </label>
                         <div className="relative">
                             <input
@@ -118,13 +105,12 @@ return (
                                 )}
                             </button>
                         </div>
-
                     </div>
                     <div>
-                            <label htmlFor="Key" className="block text-sm font-medium text-gray-700 mb-1">
-                                Clé Admin
-                            </label>
-                            <div className="relative">
+                        <label htmlFor="Key" className="block text-sm font-medium text-gray-700 mb-1">
+                            Admin Key
+                        </label>
+                        <div className="relative">
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="UIDKEY"
@@ -158,22 +144,18 @@ return (
                                 )}
                             </button>
                         </div>
-                        </div>
-                     
-                    
+                    </div>
 
                     <button
                         type="submit"
                         className="w-full py-3 bg-[#F05050] text-white font-medium rounded-lg hover:bg-[#D32F2F] transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0"
                     >
-                        Se connecter
+                        Sign in
                     </button>
-                    <a href="/AdminH" className="text-[#F05050] hover:underline font-medium">
-                        lancer adminH
-                    </a>
+                 {/*  <a href="/AdminH" className="text-[#F05050] hover:underline font-medium">
+                        Launch adminH
+                    </a>*/}  
                 </form>
-
-              
             </div>
         </div>
     </div>

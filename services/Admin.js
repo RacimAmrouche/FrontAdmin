@@ -126,5 +126,12 @@ export const BanUser = (data ) => {
       },
     });
 }
+export const UnSus = (data ) => {
+  return api.post('/Admin/RemoveSuspension', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+}
 
 

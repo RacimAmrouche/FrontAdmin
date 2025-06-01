@@ -6,7 +6,7 @@ import { AllHelp, RepHelp } from "../../services/Admin"
 import logo from "../assets/logovide.png"
 import { Link } from "react-router-dom"
 
-const RepForm = () => {
+const RepForm2 = () => {
   const navigate = useNavigate()
   const [isDark, setIsDark] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -399,13 +399,13 @@ const RepForm = () => {
             to="/AdminCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Create Admin
+            Creat Admin
           </Link>
           <Link
-            to="/AdminCrea"
+            to="/AdminHCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Create AdminH
+            Creat AdminH
           </Link>
                  
       
@@ -598,4 +598,4 @@ const RepForm = () => {
   )
 }
 
-export default RepForm
+export default RepForm2

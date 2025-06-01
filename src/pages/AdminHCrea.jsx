@@ -1,15 +1,15 @@
 "use client"
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { AddAdmin } from "../../services/auth"
+import { AddAdminH } from "../../services/auth"
 import log from "../assets/logovide.png"
 
-const AdminCrea = ({ isDark = false }) => {
+const AdminHCrea = ({ isDark = false }) => {
   const [formData, setFormData] = useState({
     email: "",
-    passwordHash: "",
-    fullName: "",
-    phoneNumber: "",
+    password: "",
+    fullname: "",
+    phonenumber: "",
   })
 
   const [errors, setErrors] = useState({})
@@ -23,51 +23,62 @@ const AdminCrea = ({ isDark = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
-    const formData = new FormData(e.target)
-    console.log(formData)
+
+    // Créer FormData manuellement avec les bons noms de champs
+    const formData = new FormData()
+    formData.append("Email", e.target.Email.value)
+    console.log("Email:", e.target.Email.value)
+    formData.append("Password", e.target.Password.value)
+    formData.append("Fullname", e.target.Fullname.value)
+    formData.append("Phonenumber", e.target.Phonenumber.value)
+
+    console.log("FormData contents:")
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value)
+    }
 
     try {
       console.log("Processing...")
-      console.log(formData)
-      const response = await AddAdmin(formData)
-      alert("Success: Successfully added ✅")
-      console.log("Done")
+      const response = await AddAdminH(formData)
+      alert("Success: AdminH Successfully added ✅")
+      console.log("Response:", response)
       setSubmitSuccess(true)
+
+      // Reset form
+      e.target.reset()
     } catch (error) {
-      console.log("Error occurred")
-      alert("Error: Failed to add ❌")
+      console.log("Error occurred:", error)
+      alert("Error: Failed to add AdminH ❌")
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div
-      className={`min-h-screen p-4 bg-gray-100"}`}
-    >
+    <div className={`min-h-screen p-4 bg-gray-100"}`}>
       {/* Navigation Bar */}
       <div className="bg-white rounded-xl shadow-md mb-3 w-full max-w-7xl mx-auto text-base mt-[51px]">
         <div className="flex flex-nowrap items-center border-b">
           {/* Logo + App Name */}
           <div className="flex items-center px-6 py-4 mr-6">
-                                <img src={log} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
-                                <span className="font-bold text-xl text-[#F05050]">Emergency</span>
-                              </div>
-                      
+            <img src={log || "/placeholder.svg"} alt="E-mergency Logo" className="h-8 w-8 mr-2" />
+            <span className="font-bold text-xl text-[#F05050]">Emergency</span>
+          </div>
+
           <Link
-            to="/SuperAdmin"
+            to="/alerts"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Alerts
           </Link>
           <Link
-            to="/VerifPat2"
+            to="/VerifPat"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify Patient Account
           </Link>
           <Link
-            to="/VerifPros2"
+            to="/VerifPros"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify Healthcare Pro Account
@@ -79,26 +90,24 @@ const AdminCrea = ({ isDark = false }) => {
             Moderation
           </Link>
           <Link
-            to="/RepForm2"
+            to="/RepForm"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Response Form
           </Link>
-          <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">Create Admin</button>
           <Link
-            to="/AdminHCrea"
+            to="/AdminCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
-            Create AdminH
+            Create Admin
           </Link>
+          <button className="px-8 py-4 font-semibold text-[#F05050] border-b-4 border-[#F05050]">Create AdminH</button>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-4xl">
-       
-
           {/* Form Card */}
           <div
             className={`${isDark ? "bg-gray-800/90 backdrop-blur-sm border border-gray-700" : "bg-white/90 backdrop-blur-sm border border-gray-200"} rounded-3xl shadow-2xl p-10 transition-all duration-300 hover:shadow-3xl`}
@@ -130,7 +139,7 @@ const AdminCrea = ({ isDark = false }) => {
                       type="email"
                       id="Email"
                       name="Email"
-                      placeholder="admin@company.com"
+                      placeholder="adminh@hospital.com"
                       className={`w-full px-5 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#F05050]/20 focus:border-[#F05050] text-lg ${isDark ? "bg-gray-700/50 border-gray-600 text-white placeholder-gray-400" : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500"} hover:border-[#F05050]/50`}
                       required
                     />
@@ -158,7 +167,7 @@ const AdminCrea = ({ isDark = false }) => {
                       type="text"
                       id="Fullname"
                       name="Fullname"
-                      placeholder="John Doe"
+                      placeholder="Dr. Jane Smith"
                       className={`w-full px-5 py-4 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#F05050]/20 focus:border-[#F05050] text-lg ${isDark ? "bg-gray-700/50 border-gray-600 text-white placeholder-gray-400" : "bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500"} hover:border-[#F05050]/50`}
                       pattern="^[^0-9]*$"
                       title="Name must not contain numbers"
@@ -270,9 +279,9 @@ const AdminCrea = ({ isDark = false }) => {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg">Administrator Created Successfully!</h3>
+                      <h3 className="font-semibold text-lg">Hospital Administrator Created Successfully!</h3>
                       <p className="text-green-700">
-                        The new administrator account has been set up and is ready to use.
+                        The new hospital administrator account has been set up and is ready to use.
                       </p>
                     </div>
                   </div>
@@ -308,7 +317,7 @@ const AdminCrea = ({ isDark = false }) => {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         />
                       </svg>
-                      Creating Administrator...
+                      Creating Hospital Administrator...
                     </>
                   ) : (
                     <>
@@ -317,10 +326,10 @@ const AdminCrea = ({ isDark = false }) => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
-                          d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                         />
                       </svg>
-                      Create Administrator
+                      Create Hospital Administrator
                     </>
                   )}
                 </button>
@@ -329,15 +338,13 @@ const AdminCrea = ({ isDark = false }) => {
           </div>
 
           {/* Footer */}
-          <div className="text-center mt-8">
-        
-          </div>
+          <div className="text-center mt-8"></div>
         </div>
       </div>
     </div>
   )
 }
 
-export default AdminCrea
+export default AdminHCrea
 
 

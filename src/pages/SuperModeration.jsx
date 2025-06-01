@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { AllPat, AllProS, SuspendUser, BanUser } from "../../services/Admin"
+
+import { AllPat, AllProS, SuspendUser, BanUser,UnSus } from "../../services/Admin"
 import logo from "../assets/logovide.png"
 import { Link } from "react-router-dom"
 
@@ -556,13 +557,13 @@ const SuperModeration = () => {
             </Link>
           
           <Link
-            to="/VerifPat"
+            to="/VerifPat2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify patient account
           </Link>
           <Link
-            to="/VerifPros"
+            to="/VerifPros2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Verify heatlhcare pro account
@@ -571,19 +572,19 @@ const SuperModeration = () => {
             Moderation
           </button>
           <Link
-            to="/RepForm"
+            to="/RepForm2"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Response form
           </Link>
           <Link
-            to="/RepForm"
+            to="/AdminCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Create Admin
           </Link>
           <Link
-            to="/RepForm"
+            to="/AdminCrea"
             className="px-8 py-4 font-semibold text-gray-600 hover:text-[#F05050] hover:border-b-4 hover:border-[#F05050] transition-all"
           >
             Create AdminH
